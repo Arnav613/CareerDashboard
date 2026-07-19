@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useAuth } from '../hooks/useAuth.jsx'
 
 const TITLES = {
@@ -41,7 +42,9 @@ export default function AuthModal({ onClose }) {
     else onClose()
   }
 
-  return (
+  // Portal to <body>: the topbar's backdrop-filter creates a containing
+  // block that would otherwise trap position:fixed inside the header.
+  return createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose} aria-label="Close">
@@ -91,6 +94,7 @@ export default function AuthModal({ onClose }) {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
